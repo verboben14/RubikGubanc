@@ -1,0 +1,5 @@
+e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubancModel\bin\Debug\RubikGubancModel.dll
+e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubancModel\bin\Debug\RubikGubancModel.pdb
+e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubancModel\obj\Debug\RubikGubancModel.csprojResolveAssemblyReference.cache
+e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubancModel\obj\Debug\RubikGubancModel.dll
+e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubancModel\obj\Debug\RubikGubancModel.pdb

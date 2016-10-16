@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubikGubanc", "RubikGubanc\RubikGubanc.csproj", "{55B0B839-2485-4977-9BA0-5DE8BF50F282}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubikGubancViewModel", "RubikGubancViewModel\RubikGubancViewModel.csproj", "{86CDCA8E-2B81-402B-BE15-94AC144328CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubikGubancModel", "RubikGubancModel\RubikGubancModel.csproj", "{7B87825A-BEA7-4561-BEE2-E5B561A0D270}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{55B0B839-2485-4977-9BA0-5DE8BF50F282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55B0B839-2485-4977-9BA0-5DE8BF50F282}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55B0B839-2485-4977-9BA0-5DE8BF50F282}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55B0B839-2485-4977-9BA0-5DE8BF50F282}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86CDCA8E-2B81-402B-BE15-94AC144328CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86CDCA8E-2B81-402B-BE15-94AC144328CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86CDCA8E-2B81-402B-BE15-94AC144328CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86CDCA8E-2B81-402B-BE15-94AC144328CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B87825A-BEA7-4561-BEE2-E5B561A0D270}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B87825A-BEA7-4561-BEE2-E5B561A0D270}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B87825A-BEA7-4561-BEE2-E5B561A0D270}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B87825A-BEA7-4561-BEE2-E5B561A0D270}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
