@@ -20,3 +20,25 @@ e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubanc\obj\Debug\Ru
 e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubanc\obj\Debug\RulesWindow.baml
 e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubanc\obj\Debug\RulesWindow.g.cs
 e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubanc\obj\Debug\App.baml
+D:\Repos\RubikGubanc\RubikGubanc\bin\Debug\RubikGubanc.exe.config
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\RubikGubanc.exe
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\RubikGubanc.pdb
+D:\Repos\RubikGubanc\RubikGubanc\bin\Debug\RubikGubanc.exe
+D:\Repos\RubikGubanc\RubikGubanc\bin\Debug\RubikGubanc.pdb
+D:\Repos\RubikGubanc\RubikGubanc\bin\Debug\RubikGubancViewModel.dll
+D:\Repos\RubikGubanc\RubikGubanc\bin\Debug\RubikGubancModel.dll
+D:\Repos\RubikGubanc\RubikGubanc\bin\Debug\RubikGubancViewModel.pdb
+D:\Repos\RubikGubanc\RubikGubanc\bin\Debug\RubikGubancModel.pdb
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\RubikGubanc.csprojResolveAssemblyReference.cache
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\GameWindow.baml
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\MainWindow.baml
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\RulesWindow.baml
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\App.baml
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\GameWindow.g.cs
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\MainWindow.g.cs
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\RulesWindow.g.cs
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\App.g.cs
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\RubikGubanc_MarkupCompile.cache
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\RubikGubanc.g.resources
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\RubikGubanc.Properties.Resources.resources
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\RubikGubanc.csproj.GenerateResource.Cache

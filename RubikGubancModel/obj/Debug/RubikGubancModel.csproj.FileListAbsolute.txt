@@ -3,3 +3,8 @@ e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubancModel\bin\Deb
 e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubancModel\obj\Debug\RubikGubancModel.csprojResolveAssemblyReference.cache
 e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubancModel\obj\Debug\RubikGubancModel.dll
 e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubancModel\obj\Debug\RubikGubancModel.pdb
+D:\Repos\RubikGubanc\RubikGubancModel\bin\Debug\RubikGubancModel.dll
+D:\Repos\RubikGubanc\RubikGubancModel\bin\Debug\RubikGubancModel.pdb
+D:\Repos\RubikGubanc\RubikGubancModel\obj\Debug\RubikGubancModel.csprojResolveAssemblyReference.cache
+D:\Repos\RubikGubanc\RubikGubancModel\obj\Debug\RubikGubancModel.dll
+D:\Repos\RubikGubanc\RubikGubancModel\obj\Debug\RubikGubancModel.pdb

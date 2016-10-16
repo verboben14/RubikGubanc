@@ -5,3 +5,10 @@ e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubancViewModel\bin
 e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubancViewModel\bin\Debug\RubikGubancModel.pdb
 e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubancViewModel\obj\Debug\RubikGubancViewModel.dll
 e:\dokumentumok\visual studio 2013\Projects\RubikGubanc\RubikGubancViewModel\obj\Debug\RubikGubancViewModel.pdb
+D:\Repos\RubikGubanc\RubikGubancViewModel\bin\Debug\RubikGubancViewModel.dll
+D:\Repos\RubikGubanc\RubikGubancViewModel\bin\Debug\RubikGubancViewModel.pdb
+D:\Repos\RubikGubanc\RubikGubancViewModel\bin\Debug\RubikGubancModel.dll
+D:\Repos\RubikGubanc\RubikGubancViewModel\bin\Debug\RubikGubancModel.pdb
+D:\Repos\RubikGubanc\RubikGubancViewModel\obj\Debug\RubikGubancViewModel.csprojResolveAssemblyReference.cache
+D:\Repos\RubikGubanc\RubikGubancViewModel\obj\Debug\RubikGubancViewModel.dll
+D:\Repos\RubikGubanc\RubikGubancViewModel\obj\Debug\RubikGubancViewModel.pdb
