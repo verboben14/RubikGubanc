@@ -15,16 +15,36 @@ namespace RubikGubancViewModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Array ImageOrder
+
+        //  EGY DIMENZIÓS MEGOLDÁS
+        /*public string[] ImageOrder
         {
             get
             {
-                string[] ImageURLs = new string[Game.cardCount];
+                string[] imageURLs = new string[Game.cardCount];
                 for (int i = 0; i < Game.cardCount; i++)
                 {
-                    ImageURLs[i] = game.Cards[i].WhichSide ? game.Cards[i].ElejeImgURL : game.Cards[i].HatuljaImgURL;
+                    imageURLs[i] = game.Cards[i].WhichSide ? game.Cards[i].ElejeImgURL : game.Cards[i].HatuljaImgURL;
                 }
-                return ImageURLs;
+                return imageURLs;
+            }
+        }*/
+        //  KÉT DIMENZIÓS MEGOLDÁS
+        public List<List<string>> ImageOrder
+        {
+            get
+            {
+                List<List<string>> imageURLs = new List<List<string>>();
+                int cardIndex=0;
+                for (int i = 0; i < 3; i++)
+                {
+                    imageURLs.Add(new List<string>());
+                    for (int j = 0; j < 3; j++)
+                    {
+                        imageURLs[i].Add(game.Cards[cardIndex].WhichSide ? game.Cards[cardIndex++].ElejeImgURL : game.Cards[cardIndex++].HatuljaImgURL);   
+                    }
+                }
+                return imageURLs;
             }
         }
 
@@ -42,7 +62,7 @@ namespace RubikGubancViewModel
             game.Cards = game.Cards.OrderBy(x => x, k).ToArray();
             OnPropertyChanged("ImageOrder");
         }
-        
+
         public void SolveOne()
         {
 
@@ -57,11 +77,12 @@ namespace RubikGubancViewModel
             OnPropertyChanged("ImageOrder");
         }
 
-        
 
-        void OnPropertyChanged([CallerMemberName]string n="")
+
+        void OnPropertyChanged([CallerMemberName]string n = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(n));
+            if (PropertyChanged != null)
+                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(n));
         }
     }
 }
