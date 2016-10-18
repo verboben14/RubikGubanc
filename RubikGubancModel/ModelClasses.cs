@@ -15,12 +15,13 @@ namespace RubikGubancModel
     {
         public const int CardSideCount = 2;
         public const int CardColorCount = 4;
-        string elejeImgURL;
-        string hatuljaImgURL;
-        bool whichSide;     // melyik az éppen vizsgált, aktív oldal
-        StringColor[,] colors;  // az első dimenzió határozza meg, hogy melyik oldala a kártyának
-        // mivel minden kártya ugyanúgy néz ki, ezért felállíthatunk egy sorrendet a madzagok pozíciója alapján, és ezeknek a színét eltárolhatjuk egy tömbben
         int x, y;
+        StringColor[,] colors;  //  az első dimenzió határozza meg, hogy melyik oldala a kártyának
+                                //  mivel minden kártya ugyanúgy néz ki, ezért felállíthatunk egy sorrendet a madzagok pozíciója alapján, és ezeknek a színét eltárolhatjuk egy tömbben
+        bool whichSide;         //  melyik az éppen vizsgált, aktív oldal
+        string elejeImgURL;     //  kártya elejének a képe
+        string hatuljaImgURL;   //  kártya hátuljának a képe
+        int rotation;           //  kártya aktuális forgatási száma
 
         public int X
         {
@@ -56,6 +57,11 @@ namespace RubikGubancModel
         {
             get { return hatuljaImgURL; }
             set { hatuljaImgURL = value; }
+        }
+        public int Rotation
+        {
+            get { return rotation * 90; }   //  mivel mindig 90 fok többszörösével forgatunk, ezért a 0,1,2,3 értékeket szorozzuk 90-nel
+            set { rotation = value; }
         }
 
         public Card()
@@ -125,24 +131,11 @@ namespace RubikGubancModel
         }
         void SetImageURLs(Card[] cards)
         {
-            cards[0].ElejeImgURL = "D:\\Repos\\RubikGubanc\\Sources\\elsoEleje.png";
-            cards[0].HatuljaImgURL = "D:\\Repos\\RubikGubanc\\Sources\\elsoHatulja.png";
-            cards[1].ElejeImgURL = "D:\\Repos\\RubikGubanc\\Sources\\masodikEleje.png";
-            cards[1].HatuljaImgURL = "D:\\Repos\\RubikGubanc\\Sources\\masodikHatulja.png";
-            cards[2].ElejeImgURL = "D:\\Repos\\RubikGubanc\\Sources\\harmadikEleje.png";
-            cards[2].HatuljaImgURL = "D:\\Repos\\RubikGubanc\\Sources\\harmadikHatulja.png";
-            cards[3].ElejeImgURL = "D:\\Repos\\RubikGubanc\\Sources\\negyedikEleje.png";
-            cards[3].HatuljaImgURL = "D:\\Repos\\RubikGubanc\\Sources\\negyedikHatulja.png";
-            cards[4].ElejeImgURL = "D:\\Repos\\RubikGubanc\\Sources\\otodikEleje.png";
-            cards[4].HatuljaImgURL = "D:\\Repos\\RubikGubanc\\Sources\\otodikHatulja.png";
-            cards[5].ElejeImgURL = "D:\\Repos\\RubikGubanc\\Sources\\hatodikEleje.png";
-            cards[5].HatuljaImgURL = "D:\\Repos\\RubikGubanc\\Sources\\hatodikHatulja.png";
-            cards[6].ElejeImgURL = "D:\\Repos\\RubikGubanc\\Sources\\hetedikEleje.png";
-            cards[6].HatuljaImgURL = "D:\\Repos\\RubikGubanc\\Sources\\hetedikHatulja.png";
-            cards[7].ElejeImgURL = "D:\\Repos\\RubikGubanc\\Sources\\nyolcadikEleje.png";
-            cards[7].HatuljaImgURL = "D:\\Repos\\RubikGubanc\\Sources\\nyolcadikHatulja.png";
-            cards[8].ElejeImgURL = "D:\\Repos\\RubikGubanc\\Sources\\kilencedikEleje.png";
-            cards[8].HatuljaImgURL = "D:\\Repos\\RubikGubanc\\Sources\\kilencedikHatulja.png";
+            for (int i = 0; i < cardCount; i++)
+            {
+                cards[i].ElejeImgURL = "/Images/_" + (i + 1) + "Eleje.png";
+                cards[i].HatuljaImgURL = "/Images/_" + (i + 1) + "Hatulja.png";
+            }
         }
     }
 

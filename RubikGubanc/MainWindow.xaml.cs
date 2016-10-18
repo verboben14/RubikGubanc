@@ -27,22 +27,38 @@ namespace RubikGubanc
 
         private void GameClick(object sender, RoutedEventArgs e)
         {
-            GameWindow gw = new GameWindow();
-
-            gw.Show();
+            if(!CheckingWindowOpen<GameWindow>())   //  mindig csak 1 ilyen ablak megnyitva
+            {
+                GameWindow gw = new GameWindow();
+                gw.Show();
+            }
         }
 
         private void RulesClick(object sender, RoutedEventArgs e)
         {
-            RulesWindow rw = new RulesWindow();
-
-            rw.Show();
+            if (!CheckingWindowOpen<RulesWindow>())   //  mindig csak 1 ilyen ablak megnyitva
+            {
+                RulesWindow rw = new RulesWindow();
+                rw.Show();
+            }
         }
 
         private void QuitClick(object sender, RoutedEventArgs e)
         {
             this.Close();
-            
+        }
+
+        public static bool CheckingWindowOpen<T>() where T:Window
+        {
+            foreach (Window w in Application.Current.Windows)
+            {
+                if (w is T)
+                {
+                    (w as T).Activate();
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

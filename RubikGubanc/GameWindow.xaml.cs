@@ -48,5 +48,14 @@ namespace RubikGubanc
         {
             rgvm.SolveTwo();
         }
+
+        private void RulesClick(object sender, RoutedEventArgs e)
+        {
+            if (!MainWindow.CheckingWindowOpen<RulesWindow>())  //  mindig csak 1 ilyen ablak legyen megnyitva
+            {
+                RulesWindow rw = new RulesWindow();
+                rw.Show();
+            }
+        }
     }
 }

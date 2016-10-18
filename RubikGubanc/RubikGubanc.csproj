@@ -113,6 +113,27 @@
       <Name>RubikGubancViewModel</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\_1Eleje.png" />
+    <Resource Include="Images\_1Hatulja.png" />
+    <Resource Include="Images\_2Eleje.png" />
+    <Resource Include="Images\_2Hatulja.png" />
+    <Resource Include="Images\_3Eleje.png" />
+    <Resource Include="Images\_3Hatulja.png" />
+    <Resource Include="Images\_4Eleje.png" />
+    <Resource Include="Images\_4Hatulja.png" />
+    <Resource Include="Images\_5Eleje.png" />
+    <Resource Include="Images\_5Hatulja.png" />
+    <Resource Include="Images\_6Eleje.png" />
+    <Resource Include="Images\_6Hatulja.png" />
+    <Resource Include="Images\_7Eleje.png" />
+    <Resource Include="Images\_7Hatulja.png" />
+    <Resource Include="Images\_8Eleje.png" />
+    <Resource Include="Images\_8Hatulja.png" />
+    <Resource Include="Images\_9Eleje.png" />
+    <Resource Include="Images\_9Hatulja.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
