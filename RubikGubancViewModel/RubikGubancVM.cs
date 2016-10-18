@@ -35,7 +35,7 @@ namespace RubikGubancViewModel
             get
             {
                 List<List<string>> imageURLs = new List<List<string>>();
-                int cardIndex=0;
+                int cardIndex = 0;
                 for (int i = 0; i < 3; i++)
                 {
                     imageURLs.Add(new List<string>());
@@ -56,7 +56,7 @@ namespace RubikGubancViewModel
         public RubikGubancVM()
         {
             game = new Game();
-            
+
         }
         public void SetRandomOrder()
         {
@@ -89,28 +89,40 @@ namespace RubikGubancViewModel
              *  Mszint: A lehetséges részmegoldások a száma a megadott szinten: hány db kártyát hányféleképpen próbálhatunk oda: mindenhol 18*4 elvileg, de lehet, hogy a korábbiakat ki kéne venni
              *  9 szint van
              *  N: 9 részfeladat
+             *  Results: lehet, hogy 2 dimenziós tömb kéne
              */
-            int i = 0;
+            int i = -1;
             int resultIndex = 0;
-            int mszint = 18*4;
-            while (!van && i < mszint)
+            int mszint = 9;
+            while (!van && i < mszint)                          //  kártyák
             {
-                i++;                                    //  mszint lehetne 9, mint a kártyák száma, és belül forral (vagy while-lal) végig az oldalain és a forgatáson
-                                                        //  így jó is lehetne akár a Cards[i]
-                if (LehetEz(level, game.Cards[i]))      //  Ft függvény, nem Cards[i] kell, csak h továbbmenjek
+                i++;
+                int j = -1;
+                while (!van && j < 2)                           //  kártyák oldalai
                 {
-                    if (JoEz(level, game.Cards[i], results))
+                    j++;                                        
+                    int k = -1;
+                    while (!van && k < 4)                       //  kártyák forgatása
                     {
-                        results[resultIndex++] = game.Cards[i];
-                        if (level == Game.cardCount)
+                        k++;                                    
+                        if (LehetEz(level, game.Cards[i]))      //  Ft függvény, megvizsgálja, hogy az adott kártya benne van-e már a megoldások között
                         {
-                            van = true;
+                            if (JoEz(level, game.Cards[i], results))
+                            {
+                                results[resultIndex++] = game.Cards[i];
+                                if (level == Game.cardCount)
+                                {
+                                    van = true;
+                                }
+                                else
+                                {
+                                    BackTrack(level + 1, results, ref van);
+                                }
+                            }
                         }
-                        else
-                        {
-                            BackTrack(level + 1, results, ref van);
-                        }
+                        game.Cards[i].Rotation = (game.Cards[i].Rotation + 1) % 4;  //  mindig forgatjuk tovább, de figyelni kell hogy ne lépjünk túl 3-on
                     }
+                    game.Cards[i].WhichSide = !game.Cards[i].WhichSide;             //  ha megnéztük a forgatást, megnézzük a kártya másik oldalán is ugyanazt
                 }
             }
         }
