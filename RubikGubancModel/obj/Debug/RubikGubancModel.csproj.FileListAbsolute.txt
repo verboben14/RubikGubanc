@@ -8,3 +8,8 @@ D:\Repos\RubikGubanc\RubikGubancModel\bin\Debug\RubikGubancModel.pdb
 D:\Repos\RubikGubanc\RubikGubancModel\obj\Debug\RubikGubancModel.csprojResolveAssemblyReference.cache
 D:\Repos\RubikGubanc\RubikGubancModel\obj\Debug\RubikGubancModel.dll
 D:\Repos\RubikGubanc\RubikGubancModel\obj\Debug\RubikGubancModel.pdb
+C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubancModel\bin\Debug\RubikGubancModel.dll
+C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubancModel\bin\Debug\RubikGubancModel.pdb
+C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubancModel\obj\Debug\RubikGubancModel.csprojResolveAssemblyReference.cache
+C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubancModel\obj\Debug\RubikGubancModel.dll
+C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubancModel\obj\Debug\RubikGubancModel.pdb

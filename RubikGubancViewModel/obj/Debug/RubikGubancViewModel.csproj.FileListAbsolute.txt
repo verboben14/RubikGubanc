@@ -12,3 +12,10 @@ D:\Repos\RubikGubanc\RubikGubancViewModel\bin\Debug\RubikGubancModel.pdb
 D:\Repos\RubikGubanc\RubikGubancViewModel\obj\Debug\RubikGubancViewModel.csprojResolveAssemblyReference.cache
 D:\Repos\RubikGubanc\RubikGubancViewModel\obj\Debug\RubikGubancViewModel.dll
 D:\Repos\RubikGubanc\RubikGubancViewModel\obj\Debug\RubikGubancViewModel.pdb
+C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubancViewModel\bin\Debug\RubikGubancViewModel.dll
+C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubancViewModel\bin\Debug\RubikGubancViewModel.pdb
+C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubancViewModel\bin\Debug\RubikGubancModel.dll
+C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubancViewModel\bin\Debug\RubikGubancModel.pdb
+C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubancViewModel\obj\Debug\RubikGubancViewModel.csprojResolveAssemblyReference.cache
+C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubancViewModel\obj\Debug\RubikGubancViewModel.dll
+C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubancViewModel\obj\Debug\RubikGubancViewModel.pdb
