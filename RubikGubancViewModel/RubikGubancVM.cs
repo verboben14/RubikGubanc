@@ -85,31 +85,30 @@ namespace RubikGubancViewModel
         Card[] backTrackResult = new Card[Game.cardCount];
         void BackTrack(int level, Card[] results, ref bool van)     //  KELL a megvalósítás
         {
-            /*  Mindig meg kell vizsgálni az összes körülötte levő kártyát: ez max. 4 lehet, és min. 2 a széleken, itt azt is meg kell, hogy szélen vagyunk-e
+            /*  Fk-ban: Mindig meg kell vizsgálni az összes körülötte levő kártyát: ez max. 4 lehet, és min. 2 a széleken, itt azt is meg kell, hogy szélen vagyunk-e
              *  Mszint: A lehetséges részmegoldások a száma a megadott szinten: hány db kártyát hányféleképpen próbálhatunk oda: mindenhol 18*4 elvileg, de lehet, hogy a korábbiakat ki kéne venni
              *  9 szint van
              *  N: 9 részfeladat
              *  Results: lehet, hogy 2 dimenziós tömb kéne
              */
             int i = -1;
-            int resultIndex = 0;
             int mszint = 9;
             while (!van && i < mszint)                          //  kártyák
             {
                 i++;
-                int j = -1;
-                while (!van && j < 2)                           //  kártyák oldalai
-                {
-                    j++;                                        
-                    int k = -1;
-                    while (!van && k < 4)                       //  kártyák forgatása
+                if (LehetsegesKartya(level, game.Cards[i]))      //  Ft függvény, megvizsgálja, hogy az adott kártya benne van-e már a megoldások között
+                {                                       //  Csak akkor megyünk a kártya probálgatásra, ha 
+                    int j = -1;
+                    while (!van && j < 2)                           //  kártyák oldalai
                     {
-                        k++;                                    
-                        if (LehetEz(level, game.Cards[i]))      //  Ft függvény, megvizsgálja, hogy az adott kártya benne van-e már a megoldások között
+                        j++;
+                        int k = -1;
+                        while (!van && k < 4)                       //  kártyák forgatása
                         {
-                            if (JoEz(level, game.Cards[i], results))
+                            k++;
+                            if (MegfeleloKartya(level, game.Cards[i], results))
                             {
-                                results[resultIndex++] = game.Cards[i];
+                                results[level] = game.Cards[i];
                                 if (level == Game.cardCount)
                                 {
                                     van = true;
@@ -119,23 +118,61 @@ namespace RubikGubancViewModel
                                     BackTrack(level + 1, results, ref van);
                                 }
                             }
+                            if (!van)       //  ha még nincs megoldás, továbbforgatjuk a kártyát
+                            {
+                                game.Cards[i].Rotation = (game.Cards[i].Rotation + 1) % 4;  //  mindig forgatjuk tovább, de figyelni kell hogy ne lépjünk túl 3-on
+                            }
                         }
-                        game.Cards[i].Rotation = (game.Cards[i].Rotation + 1) % 4;  //  mindig forgatjuk tovább, de figyelni kell hogy ne lépjünk túl 3-on
+                        if (!van)       //  ha még nincs megoldás, átfordítjuk a kártyát
+                        {
+                            game.Cards[i].WhichSide = !game.Cards[i].WhichSide;             //  ha megnéztük a forgatást, megnézzük a kártya másik oldalán is ugyanazt
+                        }
                     }
-                    game.Cards[i].WhichSide = !game.Cards[i].WhichSide;             //  ha megnéztük a forgatást, megnézzük a kártya másik oldalán is ugyanazt
                 }
             }
         }
 
-        bool LehetEz(int level, Card semiResult)
+        bool LehetsegesKartya(int level, Card semiResult)
         {
             return !backTrackResult.Contains(semiResult);       //  ha már szerepel a kártya az eddig berakottak között, akkor semmiképp nem jó ez
         }
 
-        bool JoEz(int level, Card semiResult, Card[] results)
+        bool MegfeleloKartya(int level, Card semiResult, Card[] results)    //  KELL az egész: ha jól ütközik a szomszédaival, akkor return true
         {
-            return true;                                        //  KELL az egész: ha jól ütközik a szomszédaival, akkor return true
+            bool nemMegfelelo = false;
+            switch (semiResult.Rotation)
+            {
+                case 0: 
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+            }
+
+            return !nemMegfelelo;
         }
+
+        bool KartyaAllasVizsgalat(int rotation, int level)
+        {
+            bool megJo = true, vizsgalatVege = false;
+            while (megJo && !vizsgalatVege)
+            {
+                //  JOBBRA
+
+                //  BALRA
+
+                //  FEL
+
+                //  LE
+
+                vizsgalatVege = true;       //  ha mind a 4 irány meg lett vizsgálva
+            }
+            return megJo;
+        }
+
         void OnPropertyChanged([CallerMemberName]string n = "")
         {
             if (PropertyChanged != null)
