@@ -60,8 +60,13 @@ namespace RubikGubancModel
         }
         public int Rotation
         {
-            get { return rotation * 90; }   //  mivel mindig 90 fok többszörösével forgatunk, ezért a 0,1,2,3 értékeket szorozzuk 90-nel
+            get { return rotation; }
             set { rotation = value; }
+        }
+
+        public int GetRotationDegree
+        {
+            get { return rotation * 90; }   //  mivel mindig 90 fok többszörösével forgatunk, ezért a 0,1,2,3 értékeket szorozzuk 90-nel
         }
 
         public Card()
