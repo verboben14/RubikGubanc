@@ -134,6 +134,9 @@
     <Resource Include="Images\_9Eleje.png" />
     <Resource Include="Images\_9Hatulja.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Sources\Rules.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

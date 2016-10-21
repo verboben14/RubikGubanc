@@ -15,25 +15,12 @@ namespace RubikGubancModel
     {
         public const int CardSideCount = 2;
         public const int CardColorCount = 4;
-        int x, y;
         StringColor[,] colors;  //  az első dimenzió határozza meg, hogy melyik oldala a kártyának
                                 //  mivel minden kártya ugyanúgy néz ki, ezért felállíthatunk egy sorrendet a madzagok pozíciója alapján, és ezeknek a színét eltárolhatjuk egy tömbben
         bool whichSide;         //  melyik az éppen vizsgált, aktív oldal
         string elejeImgURL;     //  kártya elejének a képe
         string hatuljaImgURL;   //  kártya hátuljának a képe
         int rotation;           //  kártya aktuális forgatási száma
-
-        public int X
-        {
-            get { return x; }
-            set { x = value; }
-        }
-        
-        public int Y
-        {
-            get { return y; }
-            set { y = value; }
-        }
 
         public StringColor[,] Colors
         {
@@ -66,26 +53,20 @@ namespace RubikGubancModel
 
         public int GetRotationDegree
         {
-            get { return rotation * 90; }   //  mivel mindig 90 fok többszörösével forgatunk, ezért a 0,1,2,3 értékeket szorozzuk 90-nel
+            get { return rotation * 90; }   //  mivel mindig 90 fok többszörösével forgatunk, ezért a 0, 1, 2, 3 értékeket szorozzuk 90-nel => 0, 90, 180, 270 fokok keletkezhetnek
         }
 
         public Card()
         {
             whichSide = true;
         }
-
-        public override string ToString()
-        {
-            return whichSide ? Colors[1, 0].ToString() + "\n" + Colors[1, 1].ToString() + "\n" + Colors[1, 2].ToString() + "\n" + Colors[1, 3].ToString() :
-                               Colors[0, 0].ToString() + "\n" + Colors[0, 1].ToString() + "\n" + Colors[0, 2].ToString() + "\n" + Colors[0, 3].ToString();
-        }
     }
 
     public class Game
     {
-        public const int cardCount = 9;
-        public static Random rnd = new Random();
-        Card[] cards;
+        public const int cardCount = 9;    // 9 kártya van a játékban
+        public static Random rnd = new Random();    //  Random szám generátor, több helyen is használom
+        Card[] cards;   //  A kártyákat tartalmazó tömb
         public Card[] Cards
         {
             get { return cards; }
@@ -93,7 +74,7 @@ namespace RubikGubancModel
         }
         public Game()
         {
-            cards = new Card[cardCount];    // 9 kártyánk van a játékban
+            cards = new Card[cardCount];
             for (int i = 0; i < cardCount; i++)
             {
                 cards[i] = new Card();
@@ -102,19 +83,9 @@ namespace RubikGubancModel
             SetImageURLs(cards);
         }
 
-        void SetColors(Card[] cards)    // Feltölti a kapott cards tömböt a játékban szereplő színekkel
+        void SetColors(Card[] cards)    // Feltölti minden kártya színeit a játéknak megfelelő színekkel
         {
-            /*  KELL: CIKLUSSAL FELTÖLTÉS
-             * for (int i = 0; i < cards.Length; i++)
-            {
-                for (int j = 0; j < Card.CardSideCount; j++)
-                {
-                    for (int k = 0; k < Card.CardColorCount; k++)
-                    {
-                        cards[i].Colors
-                    }
-                }
-            }*/
+            //  KELL: CIKLUSSAL FELTÖLTÉS
             cards[0].Colors = new StringColor[Card.CardSideCount, Card.CardColorCount] { { StringColor.Green, StringColor.Yellow, StringColor.Blue, StringColor.Red },      //Első oldal
                                                                                          { StringColor.Blue, StringColor.Yellow, StringColor.Green, StringColor.Red } };    //Második oldal
             cards[1].Colors = new StringColor[Card.CardSideCount, Card.CardColorCount] { { StringColor.Green, StringColor.Yellow, StringColor.Red, StringColor.Blue },
@@ -134,7 +105,7 @@ namespace RubikGubancModel
             cards[8].Colors = new StringColor[Card.CardSideCount, Card.CardColorCount] { { StringColor.Red , StringColor.Yellow, StringColor.Green , StringColor.Blue  },
                                                                                          { StringColor.Green , StringColor.Red , StringColor.Yellow , StringColor.Blue } };
         }
-        void SetImageURLs(Card[] cards)
+        void SetImageURLs(Card[] cards)     //  Beállítja minden kártya esetében a kártya hátuljának és elejének képének URL-jét
         {
             for (int i = 0; i < cardCount; i++)
             {
@@ -144,9 +115,9 @@ namespace RubikGubancModel
         }
     }
 
-    public class Kevero : IComparer<Card>
+    public class Kevero : IComparer<object>
     {
-        public int Compare(Card x, Card y)
+        public int Compare(object x, object y)
         {
             return Game.rnd.Next(-1, 2);
         }

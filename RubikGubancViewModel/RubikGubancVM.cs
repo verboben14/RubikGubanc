@@ -15,61 +15,49 @@ namespace RubikGubancViewModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public struct ImageDescription      //  Ebben a struktúrában eltárolom a kártyák kiválasztott képét (hátulja, vagy eleje), és a forgatás mértékét fokban (0, 90, 180, 270)
+        {
+            public string URL { get; set; }
+            public int Rotation { get; set; }
+        }
 
-        //  EGY DIMENZIÓS MEGOLDÁS
-        /*public string[] ImageOrder
+        public List<List<ImageDescription>> ImageOrder      //  Ez a lista fogja tartalmazni az éppen aktuális sorrendjét a kártyáknak két dimenziósan a megjelenítés miatt, elemeiben a kép URL-jét és a kártya forgatását
         {
             get
             {
-                string[] imageURLs = new string[Game.cardCount];
-                for (int i = 0; i < Game.cardCount; i++)
-                {
-                    imageURLs[i] = game.Cards[i].WhichSide ? game.Cards[i].ElejeImgURL : game.Cards[i].HatuljaImgURL;
-                }
-                return imageURLs;
-            }
-        }*/
-        //  KÉT DIMENZIÓS MEGOLDÁS
-        public List<List<string>> ImageOrder
-        {
-            get
-            {
-                List<List<string>> imageURLs = new List<List<string>>();
+                List<List<ImageDescription>> imageDescriptions = new List<List<ImageDescription>>();
                 int cardIndex = 0;
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < Math.Sqrt(Game.cardCount); i++)
                 {
-                    imageURLs.Add(new List<string>());
-                    for (int j = 0; j < 3; j++)
+                    imageDescriptions.Add(new List<ImageDescription>());    //  A második dimenzió
+                    for (int j = 0; j < Math.Sqrt(Game.cardCount); j++)
                     {
-                        //  KELL: kitalálni, hogy kéne a rotationt kezelni --> ez a megoldás nem biztos, hogy jó mert így 1 dologhoz lehetne Bindingelni mindent, ami nem jó
-                        //  A kártya képe + hogy mennyivel kell elforgatni
-                        //  imageURLs[i].Add((game.Cards[cardIndex].WhichSide ? game.Cards[cardIndex++].ElejeImgURL : game.Cards[cardIndex++].HatuljaImgURL) + " " + game.Cards[cardIndex++].Rotation);
-
-                        //  A kártya képe csak
-                        imageURLs[i].Add(game.Cards[cardIndex].WhichSide ? game.Cards[cardIndex++].ElejeImgURL : game.Cards[cardIndex++].HatuljaImgURL);
+                        //  Hozzáadom a megfelelő kártya adatait tartalmazó struktúrát a listához
+                        imageDescriptions[i].Add(new ImageDescription() { URL = game.Cards[cardIndex].WhichSide ? game.Cards[cardIndex].HatuljaImgURL : game.Cards[cardIndex].ElejeImgURL, Rotation = game.Cards[cardIndex++].GetRotationDegree });
                     }
                 }
-                return imageURLs;
+                return imageDescriptions;
             }
         }
 
         public RubikGubancVM()
         {
             game = new Game();
-
         }
-        public void SetRandomOrder()
+
+        public void SetRandomOrder()    //  Összekveri a kártyákat: sorrendet, oldalt és forgatási számot állít random
         {
-            Kevero k = new Kevero();
+            Kevero k = new Kevero();        //  Saját keverő osztály, ami random dönti el, hogy melyik bemenet a nagyobb
             foreach (Card card in game.Cards)
             {
                 card.WhichSide = Game.rnd.Next(0, 2) == 1 ? true : false;   //  Random kiválasztja, hogy melyik az aktív oldal
                 card.Rotation = Game.rnd.Next(0, 4);                        //  Random beállítja a forgási számot
             }
-            game.Cards = game.Cards.OrderBy(x => x, k).ToArray();           //  Random szám alapján dönti el, hogy melyik a jobb, és így rendezi, tehát random sorrendje lesz a kártyáknak
+            game.Cards = game.Cards.OrderBy(x => x, k).ToArray();           //  Rendezem a keverő példány segítségével
             OnPropertyChanged("ImageOrder");
         }
 
+        //  A játék megoldása
         Card[] backTrackResult = new Card[Game.cardCount];
         bool solved = false;
         public void SolveOne()
@@ -126,8 +114,10 @@ namespace RubikGubancViewModel
                                 else
                                 {
                                     BackTrack(level + 1, results, ref solved);
-                                    if(!solved)
+                                    if (!solved)
+                                    {
                                         results[level] = null;
+                                    }
                                 }
                             }
                             if (!solved)       //  ha még nincs megoldás, továbbforgatjuk a kártyát

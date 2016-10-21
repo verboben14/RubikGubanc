@@ -4,11 +4,10 @@
         Title="A játék" Height="450" Width="600" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <DataTemplate x:Key="SecondDimension">
-            <Image Source="{Binding}" Height="100" Width="100">
-               <!-- KELL: Image rotationre kitalálni, hogy maradjon 1 helyben a kép, és hogy convertáljam az elérési utat és a rotationt egy változóból
-                <Image.RenderTransform>
-                    <RotateTransform Angle="90"/>
-                </Image.RenderTransform>-->
+            <Image Source="{Binding URL}"  Height="100" Width="100">
+                <Image.LayoutTransform>
+                    <RotateTransform CenterX="0.5" CenterY="0.5" Angle="{Binding Rotation}"/>
+                </Image.LayoutTransform>
             </Image>
         </DataTemplate>
         <DataTemplate x:Key="FirstDimension">
@@ -25,17 +24,6 @@
         <Grid Margin="60,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Width="300">
             <ItemsControl ItemsSource="{Binding ImageOrder}" ItemTemplate="{DynamicResource FirstDimension}"/>
         </Grid>
-
-        <!--    EGY DIMENZIÓS
-        <ListBox ItemsSource="{Binding ImageOrder}" x:Name="RowsLB" Margin="10,0,0,0" HorizontalAlignment="Left" Height="402" Width="400">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <Image Source="{Binding}" Height="100" Width="100"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>-->
         <Button Content="Megoldás" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="160" Height="35" FontSize="20" FontFamily="Algerian" Click="SolveClick"/>
         <Button Content="Keverés" HorizontalAlignment="Right" Margin="0,60,10,0" VerticalAlignment="Top" Width="160" Height="35" FontSize="20" FontFamily="Algerian" Click="ShuffleClick"/>
         <Button Content="Leírás" HorizontalAlignment="Right" Margin="0,0,10,60" VerticalAlignment="Bottom" Width="160" Height="35" FontSize="20" FontFamily="Algerian" Click="RulesClick"/>
