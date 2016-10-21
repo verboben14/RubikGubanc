@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,15 @@ namespace RubikGubanc
         public RulesWindow()
         {
             InitializeComponent();
-            rulesTxb.Text = System.IO.File.ReadAllText(System.AppDomain.CurrentDomain.BaseDirectory + "/Sources/Rules.txt");
+            string path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\Rules.txt";
+            try
+            {
+                rulesTxb.Text = System.IO.File.ReadAllText(path);
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("There was no file found with the given parameters: " + path, "File does not exist!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             rulesTxb.TextWrapping = TextWrapping.Wrap;
         }
 

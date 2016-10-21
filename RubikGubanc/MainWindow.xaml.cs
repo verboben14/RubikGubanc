@@ -27,18 +27,18 @@ namespace RubikGubanc
 
         private void GameClick(object sender, RoutedEventArgs e)
         {
-            if(!CheckingWindowOpen<GameWindow>())   //  mindig csak 1 ilyen ablak megnyitva
+            if(!CheckingWindowOpen<GameWindow>())       //  Ellenőrzi, hogy van-e már ilyen ablak megnyitva
             {
-                GameWindow gw = new GameWindow();
+                GameWindow gw = new GameWindow();       //  Ha nincs, újat hozunk létre
                 gw.Show();
             }
         }
 
         private void RulesClick(object sender, RoutedEventArgs e)
         {
-            if (!CheckingWindowOpen<RulesWindow>())   //  mindig csak 1 ilyen ablak megnyitva
+            if (!CheckingWindowOpen<RulesWindow>())       //  Ellenőrzi, hogy van-e már ilyen ablak megnyitva
             {
-                RulesWindow rw = new RulesWindow();
+                RulesWindow rw = new RulesWindow();       //  Ha nincs, újat hozunk létre
                 rw.Show();
             }
         }
@@ -48,13 +48,13 @@ namespace RubikGubanc
             this.Close();
         }
 
-        public static bool CheckingWindowOpen<T>() where T:Window
+        public static bool CheckingWindowOpen<T>() where T : Window
         {
             foreach (Window w in Application.Current.Windows)
             {
                 if (w is T)
                 {
-                    (w as T).Activate();
+                    (w as T).Activate();    //  Ha már van a típusparaméterként kapott fajta ablak megnyitva, akkor azt aktívra váltja
                     return true;
                 }
             }

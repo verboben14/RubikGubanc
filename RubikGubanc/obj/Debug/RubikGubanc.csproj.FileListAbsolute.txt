@@ -64,3 +64,5 @@ C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubanc\obj\Debug\RubikGubanc_Mar
 C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubanc\obj\Debug\RubikGubanc.g.resources
 C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubanc\obj\Debug\RubikGubanc.Properties.Resources.resources
 C:\Users\hallgato\Source\Repos\RubikGubanc\RubikGubanc\obj\Debug\RubikGubanc.csproj.GenerateResource.Cache
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Repos\RubikGubanc\RubikGubanc\obj\Debug\RubikGubanc_MarkupCompile.lref

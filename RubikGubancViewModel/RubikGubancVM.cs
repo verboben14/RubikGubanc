@@ -13,27 +13,27 @@ namespace RubikGubancViewModel
     {
         private Game game;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;       //  A tulajdonságok változásához kapcsolódó esemény
 
-        public struct ImageDescription      //  Ebben a struktúrában eltárolom a kártyák kiválasztott képét (hátulja, vagy eleje), és a forgatás mértékét fokban (0, 90, 180, 270)
+        public bool Solved
         {
-            public string URL { get; set; }
-            public int Rotation { get; set; }
+            get { return solved; }
+            set { solved = value; }
         }
 
-        public List<List<ImageDescription>> ImageOrder      //  Ez a lista fogja tartalmazni az éppen aktuális sorrendjét a kártyáknak két dimenziósan a megjelenítés miatt, elemeiben a kép URL-jét és a kártya forgatását
+        public List<List<ImageDescription>> ImageOrder      //  Ez a lista fogja tartalmazni az éppen aktuális sorrendjét a kártyáknak két dimenziósan a megjelenítés miatt, elemeiben a kép URL-jét és a kártya forgatását is
         {
             get
             {
                 List<List<ImageDescription>> imageDescriptions = new List<List<ImageDescription>>();
-                int cardIndex = 0;
-                for (int i = 0; i < Math.Sqrt(Game.cardCount); i++)
+                int sqrtCardCount = (int)(Math.Sqrt(Game.cardCount));
+                for (int i = 0; i < sqrtCardCount; i++)
                 {
                     imageDescriptions.Add(new List<ImageDescription>());    //  A második dimenzió
-                    for (int j = 0; j < Math.Sqrt(Game.cardCount); j++)
+                    for (int j = 0; j < sqrtCardCount; j++)
                     {
                         //  Hozzáadom a megfelelő kártya adatait tartalmazó struktúrát a listához
-                        imageDescriptions[i].Add(new ImageDescription() { URL = game.Cards[cardIndex].WhichSide ? game.Cards[cardIndex].HatuljaImgURL : game.Cards[cardIndex].ElejeImgURL, Rotation = game.Cards[cardIndex++].GetRotationDegree });
+                        imageDescriptions[i].Add(new ImageDescription() { URL = game.Cards[i * sqrtCardCount + j].WhichSide ? game.Cards[i * sqrtCardCount + j].HatuljaImgURL : game.Cards[i * sqrtCardCount + j].ElejeImgURL, Rotation = game.Cards[i * sqrtCardCount + j].GetRotationDegree });
                     }
                 }
                 return imageDescriptions;
@@ -43,107 +43,97 @@ namespace RubikGubancViewModel
         public RubikGubancVM()
         {
             game = new Game();
+            SetRandomOrder();
         }
 
         public void SetRandomOrder()    //  Összekveri a kártyákat: sorrendet, oldalt és forgatási számot állít random
         {
-            Kevero k = new Kevero();        //  Saját keverő osztály, ami random dönti el, hogy melyik bemenet a nagyobb
+            Shuffler k = new Shuffler();        //  Saját keverő osztály, ami random dönti el, hogy melyik paraméter a nagyobb
             foreach (Card card in game.Cards)
             {
                 card.WhichSide = Game.rnd.Next(0, 2) == 1 ? true : false;   //  Random kiválasztja, hogy melyik az aktív oldal
                 card.Rotation = Game.rnd.Next(0, 4);                        //  Random beállítja a forgási számot
             }
-            game.Cards = game.Cards.OrderBy(x => x, k).ToArray();           //  Rendezem a keverő példány segítségével
-            OnPropertyChanged("ImageOrder");
+            game.Cards = game.Cards.OrderBy(x => x, k).ToArray();           //  "Rendezem" a keverő példány segítségével
+            OnPropertyChanged("ImageOrder");                                //  Megváltozott a lista, tehát meghívom az eseményt kiváltó metódust
+            solved = false;
+            OnPropertyChanged("Solved");                                    //  Keverés után nincs megoldva, tehát erre is meghívjuk a metódust
         }
 
         //  A játék megoldása
-        Card[] backTrackResult = new Card[Game.cardCount];
+        Card[] backTrackResult = new Card[Game.cardCount];          //  Ebben a tömbben lesz a végső megoldás, és közben a részmegoldások is
         bool solved = false;
-        public void SolveOne()
+
+        public void Solve()
         {
             solved = false;
             backTrackResult = new Card[Game.cardCount];
-            BackTrack(0, backTrackResult, ref solved);
+            BackTrackSolve(0, backTrackResult, ref solved);
             if (solved)
             {
                 game.Cards = backTrackResult;
             }
-            else
-            {
-                //  KELL: ha nem volt megoldás, akkor kitalálni mit csináljon
-            }
             OnPropertyChanged("ImageOrder");
+            OnPropertyChanged("Solved");
         }
 
-        public void SolveTwo()
+        void BackTrackSolve(int level, Card[] results, ref bool solved)
         {
-
-            OnPropertyChanged("ImageOrder");
-        }
-
-        void BackTrack(int level, Card[] results, ref bool solved)     //  KELL a megvalósítás
-        {
-            /*  Fk-ban: Mindig meg kell vizsgálni az összes körülötte levő kártyát: ez max. 4 lehet, és min. 2 a széleken, itt azt is meg kell, hogy szélen vagyunk-e
-             *  Mszint: A lehetséges részmegoldások a száma a megadott szinten: hány db kártyát hányféleképpen próbálhatunk oda: mindenhol 18*4 elvileg, de lehet, hogy a korábbiakat ki kéne venni
-             *  9 szint van
-             *  N: 9 részfeladat
-             *  Results: lehet, hogy 2 dimenziós tömb kéne
-             */
             int i = -1;
-            while (!solved && i < Game.cardCount - 1)                    //  kártyák
+            while (!solved && i < Game.cardCount - 1)                    //  Végigmegy a kártyákon
             {
                 i++;
-                if (IsPossibleCard(level, game.Cards[i]))                //  Ft függvény, megvizsgálja, hogy az adott kártya benne van-e már a megoldások között
-                {                                                        //  Csak akkor megyünk a kártya probálgatásra, ha 
+                if (IsPossibleCard(game.Cards[i]))                //  Megvizsgálja, hogy az adott kártya benne van-e már a results tömbben, ha igen nem rakhatjuk bele mégegyszer
+                {                                                        //  Csak akkor megyünk a kártya próbálgatásra, ha még lehetséges ez a kártya
                     int j = -1;
-                    while (!solved && j < 1)             //  kártyák oldalai
+                    while (!solved && j < Card.CardSideCount - 1)              //  Megfordítja a kártyát (eleje, hátulja)
                     {
                         j++;
                         int k = -1;
-                        while (!solved && k < 3)         //  kártyák forgatása
+                        while (!solved && k < Card.CardColorCount - 1)         //  Végigforgatja a kártyát
                         {
                             k++;
-                            if (IsSuitableCard(level, game.Cards[i], results))
+                            if (IsSuitableCard(level, game.Cards[i], results))      //  Megvizsgálja, hogy az eddigi részmegoldásokat figyelembe véve megfelelő-e a kártya
                             {
-                                results[level] = game.Cards[i];
-                                if (level == Game.cardCount - 1)
+                                results[level] = game.Cards[i];                     //  Ha igen, hozzáadjuk az eddig részmegoldásokhoz
+                                if (level == Game.cardCount - 1)                    //  Ha a részmegoldásban megvan minden kártya, akkor megtaláltuk a megoldást
                                 {
                                     solved = true;
                                 }
                                 else
                                 {
-                                    BackTrack(level + 1, results, ref solved);
+                                    BackTrackSolve(level + 1, results, ref solved);     //  Meghívjuk eggyel magasabb szintre a metódust
                                     if (!solved)
                                     {
-                                        results[level] = null;
+                                        results[level] = null;                      //  Ha nincs megoldva még, és visszatér a rekurzióból, akkor nullra kell állítani az aktuális elemet, mert különben benne maradna a részmegoldások között egy nem jó kártya
                                     }
                                 }
                             }
-                            if (!solved)       //  ha még nincs megoldás, továbbforgatjuk a kártyát
+                            if (!solved)       //  Ha még nincs megoldás, továbbforgatjuk a kártyát
                             {
-                                game.Cards[i].Rotation = (game.Cards[i].Rotation + 1) % 4;  //  mindig forgatjuk tovább, de figyelni kell hogy ne lépjünk túl 3-on
+                                game.Cards[i].Rotation = (game.Cards[i].Rotation + 1) % 4;  //  Mindig forgatjuk tovább, de figyelni kell hogy ne lépjünk túl 3-on
                             }
                         }
-                        if (!solved)       //  ha még nincs megoldás, átfordítjuk a kártyát
+                        if (!solved)        //  Ha még nincs megoldás, megfordítjuk a kártyát
                         {
-                            game.Cards[i].WhichSide = !game.Cards[i].WhichSide;             //  ha megnéztük a forgatást, megnézzük a kártya másik oldalán is ugyanazt
+                            game.Cards[i].WhichSide = !game.Cards[i].WhichSide;             //  Ha megnéztük a forgatást, megnézzük a kártya másik oldalán is ugyanazt
                         }
                     }
                 }
             }
         }
 
-        bool IsPossibleCard(int level, Card testedResult)
+        bool IsPossibleCard(Card testedResult)
         {
-            return !backTrackResult.Contains(testedResult);       //  ha már szerepel a kártya az eddig berakottak között, akkor semmiképp nem jó ez
+            return !backTrackResult.Contains(testedResult);       //  Ha már szerepel a kártya az eddig berakottak között, akkor semmiképp nem jó ez
         }
 
-        bool IsSuitableCard(int level, Card testedResult, Card[] results)    //  KELL az egész: ha jól ütközik a szomszédaival, akkor return true
-        {   //  Csak balra és fel kell vizsgálni, mert jobbra és le még biztos, hogy nincsen kártya
+        bool IsSuitableCard(int level, Card testedResult, Card[] results)
+        {   //  Csak balra és fel kell vizsgálni, mert jobbra és le szomszédkártya még biztos, hogy nincsen
             bool notSuitable = false;
             switch (testedResult.Rotation)
             {
+                //  Az éppen tesztelt kártya forgatási száma alapján, átadjuk paraméterként, hogy melyik madzagokat kell vizsgálni az egyes szomszédok esetében (utolsó 4 paraméter)
                 case 0: notSuitable = !CardRotationCheck(level, testedResult, results, 3, 1, 1, 2);     //  A CardRotationCheck megvizsgálja a balra levő, és a felette levő kártyákat, és ha jó akkor igazzal tér vissza
                     break;
                 case 1: notSuitable = !CardRotationCheck(level, testedResult, results, 0, 2, 3, 1);
@@ -152,27 +142,27 @@ namespace RubikGubancViewModel
                     break;
                 case 3: notSuitable = !CardRotationCheck(level, testedResult, results, 1, 2, 0, 3);
                     break;
-                //  talán default-nak egy Exception, mivel akkor nem jó a rotation értéke
+                default:
+                    throw new MyException("Nem megfelelő a forgatási szám: + " + testedResult.Rotation);        //  Ha ezektől különböző érték, akkor nem jó a forgatási szám
             }
-
             return !notSuitable;
         }
 
-        bool CardRotationCheck(int level, Card testedResult, Card[] results, int bx, int by, int fx, int fy)    //  Balra és Fel irányba melyik Stringeket kell vizsgáljuk: bx, by, fx, fy
+        bool CardRotationCheck(int level, Card testedResult, Card[] results, int b1, int b2, int f1, int f2)    //  Balra és Fel irányba melyik madzagokat kell vizsgáljuk: b1, b2, f1, f2
         {
             bool stillGood = true;
-            //  BALRA
-            int testedResultSide = testedResult.WhichSide ? 1 : 0;  //  A tesztelt kártya aktív oldalát intben elmentem
+            //  Vizsgálat a balra szomszédra:
+            int testedResultSide = testedResult.WhichSide ? 1 : 0;  //  A tesztelt kártya aktív oldalát intben elmentem az indexelés miatt
             if (level != 0 && level != 3 && level != 6)  //  Ezeknél az eseteknél nem kell vizsgálnunk a balra oldalt, mert nincs ott kártya
             {
                 Card cardTemp = results[level - 1];         //  A hivatkozások egyszerűsítése miatt
                 int cardTempSide = cardTemp.WhichSide ? 1 : 0;     //  A vizsgált szomszéd aktív oldalát intben elmentem
-                StringColor bxColor = testedResult.Colors[testedResultSide, bx];
-                StringColor byColor = testedResult.Colors[testedResultSide, by];
+                StringColor bxColor = testedResult.Colors[testedResultSide, b1];
+                StringColor byColor = testedResult.Colors[testedResultSide, b2];
                 switch (cardTemp.Rotation)          //  Megnézzük a vizsgált szomszéd jelenlegi állását
                 {
                     case 0: if (bxColor != cardTemp.Colors[cardTempSide, 3] || byColor != cardTemp.Colors[cardTempSide, 0])
-                        { stillGood = false; }  //  ha valamelyik string nem jól kapcsolódik, akkor már nem jó a kártya
+                        { stillGood = false; }  //  Ha valamelyik madzag nem jól kapcsolódik, akkor már nem jó a kártya
                         break;
                     case 1: if (bxColor != cardTemp.Colors[cardTempSide, 2] || byColor != cardTemp.Colors[cardTempSide, 1])
                         { stillGood = false; }
@@ -183,17 +173,18 @@ namespace RubikGubancViewModel
                     case 3: if (bxColor != cardTemp.Colors[cardTempSide, 2] || byColor != cardTemp.Colors[cardTempSide, 0])
                         { stillGood = false; }
                         break;
-                    //  talán default-nak egy Exception, mivel akkor nem jó a rotation értéke
+                    default:
+                        throw new MyException("Nem megfelelő a forgatási szám: + " + cardTemp.Rotation);        //  Ha ezektől különböző érték, akkor nem jó a forgatási szám
                 }
             }
 
-            //  FEL
-            if (stillGood && level > 2)   //  Ha még lehet ez a kártya, és a szint nagyobb 2-nél akkor kell a felfelé irányt vizsgálnunk
+            //  Vizsgálat a felső szomszédra, ha balra szomszéd vizsgálat sikerült:
+            if (stillGood && level > 2)   //  Ha a szint kisebb kettőnél, akkor nem kell vizsgálnunk a felszomszédot, mivel az az első sor
             {
                 Card cardTemp = results[level - 3];     //  A hivatkozások egyszerűsítése miatt
                 int oldal = cardTemp.WhichSide ? 1 : 0;
-                StringColor fxColor = testedResult.Colors[testedResultSide, fx];
-                StringColor fyColor = testedResult.Colors[testedResultSide, fy];
+                StringColor fxColor = testedResult.Colors[testedResultSide, f1];
+                StringColor fyColor = testedResult.Colors[testedResultSide, f2];
                 switch (cardTemp.Rotation)
                 {
                     case 0: if (fxColor != cardTemp.Colors[oldal, 2] || fyColor != cardTemp.Colors[oldal, 0])
@@ -208,14 +199,16 @@ namespace RubikGubancViewModel
                     case 3: if (fxColor != cardTemp.Colors[oldal, 1] || fyColor != cardTemp.Colors[oldal, 3])
                         { stillGood = false; }
                         break;
+                    default:
+                        throw new MyException("Nem megfelelő a forgatási szám: + " + cardTemp.Rotation);        //  Ha ezektől különböző érték, akkor nem jó a forgatási szám
                 }
             }
             return stillGood;
         }
-
-        void OnPropertyChanged([CallerMemberName]string n = "")
+        //  Az eseményt kiváltó metódus
+        void OnPropertyChanged([CallerMemberName]string n = "")     //  A paraméterként kapott tulajdonság név alapján váltja ki az eseményt, ha nem kap, akkor pedig a hívó neve adódik át
         {
-            if (PropertyChanged != null)
+            if (PropertyChanged != null)            //  Megvizsgáljuk, hogy az esemény nem null-e
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(n));
         }
     }
