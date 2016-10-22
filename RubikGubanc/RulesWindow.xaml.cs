@@ -23,15 +23,7 @@ namespace RubikGubanc
         public RulesWindow()
         {
             InitializeComponent();
-            string path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Sources\\Rules.txt";
-            try
-            {
-                rulesTxb.Text = System.IO.File.ReadAllText(path);
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("There was no file found with the given parameters: " + path, "File does not exist!", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            rulesTxb.Text = RubikGubanc.Properties.Resources.Rules;
             rulesTxb.TextWrapping = TextWrapping.Wrap;
         }
 

@@ -117,8 +117,8 @@ namespace RubikGubancModel
         {
             for (int i = 0; i < cardCount; i++)
             {
-                cards[i].ElejeImgURL = "\\Images\\_" + (i + 1) + "Eleje.png";
-                cards[i].HatuljaImgURL = "\\Images\\_" + (i + 1) + "Hatulja.png";
+                cards[i].ElejeImgURL = "Images/_" + (i + 1) + "Eleje.png";
+                cards[i].HatuljaImgURL = "Images/_" + (i + 1) + "Hatulja.png";
             }
         }
     }
