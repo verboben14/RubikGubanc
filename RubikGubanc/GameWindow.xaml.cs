@@ -31,14 +31,7 @@ namespace RubikGubanc
         private void SolveClick(object sender, RoutedEventArgs e)
         {
             string hiba = "";
-            try
-            {
-                rgvm.Solve(ref hiba);
-            }
-            catch(IndexOutOfRangeException)
-            {
-                MessageBox.Show("Az index a tömb határain kívülre mutatott!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            rgvm.Solve(ref hiba);
             if(hiba != "")
             {
                 MessageBox.Show(hiba, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -47,14 +40,7 @@ namespace RubikGubanc
 
         private void ShuffleClick(object sender, RoutedEventArgs e)
         {
-            try
-            {
                 rgvm.SetRandomOrder();
-            }
-            catch (IndexOutOfRangeException)
-            {
-                MessageBox.Show("Az index a tömb határain kívülre mutatott!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
 
         private void QuitClick(object sender, RoutedEventArgs e)
