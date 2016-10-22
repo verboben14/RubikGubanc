@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RubikGubancModel
 {
-    public struct ImageDescription      //  Ebben a struktúrában eltárolom a kártyák kiválasztott képét (hátulja, vagy eleje), és a forgatás mértékét fokban (0, 90, 180, 270)
+    public struct CardDescription      //  Ebben a struktúrában eltárolom a kártyák kiválasztott képét (hátulja, vagy eleje), és a forgatás mértékét fokban (0, 90, 180, 270)
     {
         public string URL { get; set; }
         public int Rotation { get; set; }

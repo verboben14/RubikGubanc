@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using RubikGubancModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 namespace RubikGubancViewModel
 {
@@ -21,19 +22,26 @@ namespace RubikGubancViewModel
             set { solved = value; }
         }
 
-        public List<List<ImageDescription>> ImageOrder      //  Ez a lista fogja tartalmazni az éppen aktuális sorrendjét a kártyáknak két dimenziósan a megjelenítés miatt, elemeiben a kép URL-jét és a kártya forgatását is
+        public List<List<CardDescription>> ImageOrder      //  Ez a lista fogja tartalmazni az éppen aktuális sorrendjét a kártyáknak két dimenziósan a megjelenítés miatt, elemeiben a kép URL-jét és a kártya forgatását is
         {
             get
             {
-                List<List<ImageDescription>> imageDescriptions = new List<List<ImageDescription>>();
+                List<List<CardDescription>> imageDescriptions = new List<List<CardDescription>>();
                 int sqrtCardCount = (int)(Math.Sqrt(Game.cardCount));
                 for (int i = 0; i < sqrtCardCount; i++)
                 {
-                    imageDescriptions.Add(new List<ImageDescription>());    //  A második dimenzió
+                    imageDescriptions.Add(new List<CardDescription>());    //  A második dimenzió
                     for (int j = 0; j < sqrtCardCount; j++)
                     {
                         //  Hozzáadom a megfelelő kártya adatait tartalmazó struktúrát a listához
-                        imageDescriptions[i].Add(new ImageDescription() { URL = game.Cards[i * sqrtCardCount + j].WhichSide ? game.Cards[i * sqrtCardCount + j].HatuljaImgURL : game.Cards[i * sqrtCardCount + j].ElejeImgURL, Rotation = game.Cards[i * sqrtCardCount + j].GetRotationDegree });
+                        try
+                        {
+                            imageDescriptions[i].Add(new CardDescription() { URL = game.Cards[i * sqrtCardCount + j].WhichSide ? game.Cards[i * sqrtCardCount + j].HatuljaImgURL : game.Cards[i * sqrtCardCount + j].ElejeImgURL, Rotation = game.Cards[i * sqrtCardCount + j].GetRotationDegree });
+                        }
+                        catch(IndexOutOfRangeException)
+                        {
+                            Debug.WriteLine("Kártya leírások feltöltése: Az index a tömb határain kívűlre mutatott!");
+                        }
                     }
                 }
                 return imageDescriptions;
@@ -64,11 +72,26 @@ namespace RubikGubancViewModel
         Card[] backTrackResult = new Card[Game.cardCount];          //  Ebben a tömbben lesz a végső megoldás, és közben a részmegoldások is
         bool solved = false;
 
-        public void Solve()
+        public void Solve(ref string hiba)
         {
             solved = false;
             backTrackResult = new Card[Game.cardCount];
-            BackTrackSolve(0, backTrackResult, ref solved);
+            try
+            {
+                BackTrackSolve(0, backTrackResult, ref solved);
+            }
+            catch (MyException e)
+            {
+                hiba = e.Message;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                hiba = "Az index a tömb határain kívülre mutatott!";
+            }
+            catch (Exception)
+            {
+                hiba = "Hiba történt!";
+            }
             if (solved)
             {
                 game.Cards = backTrackResult;
@@ -143,7 +166,7 @@ namespace RubikGubancViewModel
                 case 3: notSuitable = !CardRotationCheck(level, testedResult, results, 1, 2, 0, 3);
                     break;
                 default:
-                    throw new MyException("Nem megfelelő a forgatási szám: + " + testedResult.Rotation);        //  Ha ezektől különböző érték, akkor nem jó a forgatási szám
+                    throw new MyException("Nem megfelelő a forgatási szám: " + testedResult.Rotation);        //  Ha ezektől különböző érték, akkor nem jó a forgatási szám
             }
             return !notSuitable;
         }
@@ -153,7 +176,8 @@ namespace RubikGubancViewModel
             bool stillGood = true;
             //  Vizsgálat a balra szomszédra:
             int testedResultSide = testedResult.WhichSide ? 1 : 0;  //  A tesztelt kártya aktív oldalát intben elmentem az indexelés miatt
-            if (level != 0 && level != 3 && level != 6)  //  Ezeknél az eseteknél nem kell vizsgálnunk a balra oldalt, mert nincs ott kártya
+            int sqrtCardCount = (int)Math.Sqrt(Game.cardCount);
+            if (level % sqrtCardCount != 0)  //  Ezeknél az eseteknél nem kell vizsgálnunk a balra oldalt, mert nincs ott kártya (0-ás, 3-as, 6-os indexű kártyák)
             {
                 Card cardTemp = results[level - 1];         //  A hivatkozások egyszerűsítése miatt
                 int cardTempSide = cardTemp.WhichSide ? 1 : 0;     //  A vizsgált szomszéd aktív oldalát intben elmentem
@@ -174,14 +198,14 @@ namespace RubikGubancViewModel
                         { stillGood = false; }
                         break;
                     default:
-                        throw new MyException("Nem megfelelő a forgatási szám: + " + cardTemp.Rotation);        //  Ha ezektől különböző érték, akkor nem jó a forgatási szám
+                        throw new MyException("Nem megfelelő a forgatási szám: " + cardTemp.Rotation);        //  Ha ezektől különböző érték, akkor nem jó a forgatási szám
                 }
             }
 
             //  Vizsgálat a felső szomszédra, ha balra szomszéd vizsgálat sikerült:
-            if (stillGood && level > 2)   //  Ha a szint kisebb kettőnél, akkor nem kell vizsgálnunk a felszomszédot, mivel az az első sor
+            if (stillGood && level > sqrtCardCount - 1)   //  Ha a szint kisebb kettőnél, akkor nem kell vizsgálnunk a felszomszédot, mivel az az első sor
             {
-                Card cardTemp = results[level - 3];     //  A hivatkozások egyszerűsítése miatt
+                Card cardTemp = results[level - sqrtCardCount];     //  A hivatkozások egyszerűsítése miatt
                 int oldal = cardTemp.WhichSide ? 1 : 0;
                 StringColor fxColor = testedResult.Colors[testedResultSide, f1];
                 StringColor fyColor = testedResult.Colors[testedResultSide, f2];
@@ -205,6 +229,7 @@ namespace RubikGubancViewModel
             }
             return stillGood;
         }
+
         //  Az eseményt kiváltó metódus
         void OnPropertyChanged([CallerMemberName]string n = "")     //  A paraméterként kapott tulajdonság név alapján váltja ki az eseményt, ha nem kap, akkor pedig a hívó neve adódik át
         {

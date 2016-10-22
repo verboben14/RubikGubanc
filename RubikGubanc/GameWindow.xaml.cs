@@ -30,12 +30,31 @@ namespace RubikGubanc
 
         private void SolveClick(object sender, RoutedEventArgs e)
         {
-            rgvm.Solve();
+            string hiba = "";
+            try
+            {
+                rgvm.Solve(ref hiba);
+            }
+            catch(IndexOutOfRangeException)
+            {
+                MessageBox.Show("Az index a tömb határain kívülre mutatott!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            if(hiba != "")
+            {
+                MessageBox.Show(hiba, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void ShuffleClick(object sender, RoutedEventArgs e)
         {
-            rgvm.SetRandomOrder();
+            try
+            {
+                rgvm.SetRandomOrder();
+            }
+            catch (IndexOutOfRangeException)
+            {
+                MessageBox.Show("Az index a tömb határain kívülre mutatott!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void QuitClick(object sender, RoutedEventArgs e)
